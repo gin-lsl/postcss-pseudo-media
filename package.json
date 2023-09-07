@@ -1,0 +1,21 @@
+{
+  "name": "postcss-pseudo-media",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "unit": "uvu . '\\.test\\.js$'",
+    "test": "npm run unit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "peerDependencies": {
+    "postcss": "^8.4.27"
+  },
+  "devDependencies": {
+    "eslint": "^8.47.0",
+    "postcss": "^8.4.27",
+    "uvu": "^0.5.6"
+  }
+}
