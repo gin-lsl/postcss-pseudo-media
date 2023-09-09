@@ -3,40 +3,54 @@
 /**
  * @type {import('postcss').PluginCreator}
  */
-module.exports = (opts) => {
+module.exports = (opts = {}) => {
+  const xs = `@media (max-width: ${opts.xs || 768}px) `;
+  const sm = `@media (max-width: ${opts.sm || 768}px) `;
+  const md = `@media (max-width: ${opts.md || 992}px) `;
+  const lg = `@media (max-width: ${opts.lg || 1200}px) `;
+
   return {
     postcssPlugin: "postcss-pseudo-media",
-    prepare() {
-      const mapper = {
-        xs: `@media (max-width: ${opts.xs || 768}px)`,
-        sm: `@media (max-width: ${opts.sm || 768}px)`,
-        md: `@media (max-width: ${opts.md || 992}px)`,
-        lg: `@media (max-width: ${opts.lg || 1200}px)`,
-      };
+    Rule(node) {
+      const originSelector = node.selector;
+      originSelector.replace(/:xs|:sm|:md|:lg/g, (match) => {
+        const realSelector = originSelector.replace(match, "");
 
-      return {
-        Rule(node) {
-          switch (node.selector) {
-            case ":xs":
-              node.selector = mapper.xs;
-              break;
+        node.selector = realSelector;
 
-            case ":sm":
-              node.selector = mapper.sm;
-              break;
+        /** @type {string} */
+        let mediaSelector;
 
-            case ":md":
-              node.selector = mapper.md;
-              break;
+        switch (match) {
+          case ":xs":
+            mediaSelector = xs;
+            break;
 
-            case ":lg":
-              node.selector = mapper.lg;
-              break;
+          case ":sm":
+            mediaSelector = sm;
+            break;
 
-            default:
-          }
-        },
-      };
+          case ":md":
+            mediaSelector = md;
+            break;
+
+          case ":lg":
+            mediaSelector = lg;
+            break;
+
+          default:
+        }
+
+        if (mediaSelector) {
+          const mediaNode = node.clone({
+            selector: mediaSelector,
+            nodes: [node.clone()],
+          });
+
+          node.parent.insertBefore(node, mediaNode);
+          node.remove();
+        }
+      });
     },
   };
 };
