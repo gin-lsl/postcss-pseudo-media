@@ -2,7 +2,7 @@
   "name": "postcss-pseudo-media",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
     "unit": "uvu . '\\.test\\.js$'",
     "test": "npm run unit"
@@ -17,5 +17,6 @@
     "eslint": "^8.47.0",
     "postcss": "^8.4.27",
     "uvu": "^0.5.6"
-  }
+  },
+  "repository": "https://github.com/gin-lsl/postcss-pseudo-media.git"
 }
